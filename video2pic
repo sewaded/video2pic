@@ -1,0 +1,33 @@
+function []=video2pic(route,a,b)
+%     Instruction:
+%           video(route of your mp4 , initial frame , end frame)
+% 
+%     The route of storage is 'C:\Users\Administrator\Desktop\'today's date''
+% 
+%     Example:
+%           video('C:\Users\Administrator\Desktop\test.mp4',101,200,'C:\Users\Administrator\Desktop\filefolder')
+    tic
+    v=VideoReader(route);
+    label=v.Name;
+    while 1-strcmp(label(length(label)),'.')
+        label(length(label))='';
+    end
+    label(length(label))='';
+    l=v.NumberOfFrames;
+    if a>b || a<=0
+        disp('Invalid range.')
+        return
+    end
+    if b>l
+        disp('Range out of video length.')
+        disp(strcat('Video length: ',num2str(l)))
+        return
+    end
+    storage=strcat('C:\Users\Administrator\Desktop\',date);
+    mkdir(storage);
+    for o1=a:b
+        img=read(v,o1);
+        eval(strcat('imwrite(img,''',storage,'\',label,'-',num2str(o1),'.png'')'))
+    end
+    toc
+end
